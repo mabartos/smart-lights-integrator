@@ -21,12 +21,7 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
 
     @Override
     public String getId() {
-        return entity.id.toString();
-    }
-
-    @Override
-    public void setId(String id) {
-        //todo UUID
+        return entity.getId();
     }
 
     @Override
@@ -57,8 +52,7 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
 
     @Override
     public boolean removeChildrenDistrict(CityModel district) {
-        //todo change ID
-        return entity.getChildrenDistricts().removeIf(f -> f.id.toString().equals(district.getId()));
+        return entity.getChildrenDistricts().removeIf(f -> f.getId().equals(district.getId()));
     }
 
     @Override

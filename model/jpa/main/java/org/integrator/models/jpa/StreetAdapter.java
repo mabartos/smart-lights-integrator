@@ -22,14 +22,8 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
     }
 
     @Override
-    //TODO
     public String getId() {
-        return entity.id.toString();
-    }
-
-    @Override
-    public void setId(String id) {
-        //todo
+        return entity.getId();
     }
 
     @Override
@@ -49,7 +43,6 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
 
     @Override
     public void setCity(CityModel city) {
-        //todo IDs
         sf.withTransaction(session -> CityEntity.findById(city.getId())
                 .onItem()
                 .castTo(CityEntity.class)
@@ -74,8 +67,7 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
 
     @Override
     public boolean removeSubStreet(StreetModel street) {
-        //todo IDs
-        return entity.getSubStreets().removeIf(f -> f.id.toString().equals(street.getId()));
+        return entity.getSubStreets().removeIf(f -> f.getId().equals(street.getId()));
     }
 
     @Override

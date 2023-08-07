@@ -24,12 +24,7 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
 
     @Override
     public String getId() {
-        return entity.id.toString();
-    }
-
-    @Override
-    public void setId(String id) {
-        //todo UUID
+        return entity.getId();
     }
 
     @Override
@@ -104,7 +99,6 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
 
     @Override
     public boolean removeNeighbour(DeviceModel device) {
-        //TODO IDs
-        return entity.getNeighbours().removeIf(f -> device.getId().equals(f.id.toString()));
+        return entity.getNeighbours().removeIf(f -> device.getId().equals(f.getId()));
     }
 }
