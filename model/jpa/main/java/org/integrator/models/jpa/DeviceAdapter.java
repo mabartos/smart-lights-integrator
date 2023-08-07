@@ -1,107 +1,97 @@
 package org.integrator.models.jpa;
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
 import org.integrator.models.Coordinates;
 import org.integrator.models.DeviceModel;
 import org.integrator.models.StreetModel;
+import org.integrator.models.jpa.entities.DeviceAttributeEntity;
+import org.integrator.models.jpa.entities.DeviceEntity;
 
-import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class DeviceAdapter implements DeviceModel {
+public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, DeviceEntity> implements DeviceModel {
+
+    private final DeviceEntity entity;
+
+    public DeviceAdapter(DeviceEntity entity) {
+        super(entity);
+        this.entity = entity;
+    }
 
     @Override
-    public Uni<String> getSerialNo() {
-        return null;
+    public String getId() {
+        return entity.id.toString();
+    }
+
+    @Override
+    public void setId(String id) {
+        //todo UUID
+    }
+
+    @Override
+    public String getSerialNo() {
+        return entity.getSerialNo();
     }
 
     @Override
     public void setSerialNo(String serialNo) {
-
+        entity.setSerialNo(serialNo);
     }
 
     @Override
-    public Uni<String> getDeviceType() {
-        return null;
+    public String getDeviceType() {
+        return entity.getDeviceType();
     }
 
     @Override
     public void setDeviceType(String type) {
-
+        entity.setDeviceType(type);
     }
 
     @Override
-    public Uni<StreetModel> getStreet() {
-        return null;
+    public StreetModel getStreet() {
+        return new StreetAdapter(entity.getStreet());
     }
 
     @Override
     public void setStreet(StreetModel street) {
-
+        //todo find
     }
 
     @Override
-    public Uni<Boolean> isEnabled() {
-        return null;
+    public boolean isEnabled() {
+        return entity.isEnabled();
     }
 
     @Override
     public void enable(boolean enable) {
-
+        entity.setEnabled(enable);
     }
 
     @Override
-    public Uni<Coordinates> getCoordinates() {
-        return null;
+    public Coordinates getCoordinates() {
+        return entity.getCoordinates();
     }
 
     @Override
     public void setCoordinates(Coordinates coordinates) {
-
+        entity.setCoordinates(coordinates);
     }
 
     @Override
-    public Multi<DeviceModel> getNeighbours() {
-        return null;
+    public Set<DeviceModel> getNeighbours() {
+        return entity.getNeighbours().stream().map(DeviceAdapter::new).collect(Collectors.toSet());
     }
 
     @Override
     public boolean addNeighbour(DeviceModel device) {
+        //todo find
         return false;
     }
 
     @Override
     public boolean removeNeighbour(DeviceModel device) {
-        return false;
-    }
-
-    @Override
-    public Uni<Map<String, String>> getAttributes() {
-        return null;
-    }
-
-    @Override
-    public Uni<String> getAttribute(String name) {
-        return null;
-    }
-
-    @Override
-    public void setAttribute(String name, String value) {
-
-    }
-
-    @Override
-    public void removeAttribute(String name) {
-
-    }
-
-    @Override
-    public Uni<String> getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(String id) {
-
+        //TODO IDs
+        return entity.getNeighbours().removeIf(f -> device.getId().equals(f.id.toString()));
     }
 }

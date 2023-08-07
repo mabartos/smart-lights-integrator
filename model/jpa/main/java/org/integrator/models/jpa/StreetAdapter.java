@@ -1,85 +1,76 @@
 package org.integrator.models.jpa;
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
 import org.integrator.models.CityModel;
 import org.integrator.models.StreetModel;
+import org.integrator.models.jpa.entities.StreetAttributeEntity;
+import org.integrator.models.jpa.entities.StreetEntity;
 
-import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class StreetAdapter implements StreetModel {
-    @Override
-    public Uni<Map<String, String>> getAttributes() {
-        return null;
+public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, StreetEntity> implements StreetModel {
+
+    private final StreetEntity entity;
+
+    public StreetAdapter(StreetEntity entity) {
+        super(entity);
+        this.entity = entity;
     }
 
     @Override
-    public Uni<String> getAttribute(String name) {
-        return null;
-    }
-
-    @Override
-    public void setAttribute(String name, String value) {
-
-    }
-
-    @Override
-    public void removeAttribute(String name) {
-
-    }
-
-    @Override
-    public Uni<String> getId() {
-        return null;
+    //TODO
+    public String getId() {
+        return entity.id.toString();
     }
 
     @Override
     public void setId(String id) {
-
+        //todo
     }
 
     @Override
-    public Uni<String> getName() {
-        return null;
+    public String getName() {
+        return entity.getName();
     }
 
     @Override
     public void setName(String name) {
-
+        entity.setName(name);
     }
 
     @Override
-    public Uni<CityModel> getCity() {
-        return null;
+    public CityModel getCity() {
+        return new CityAdapter(entity.getCity());
     }
 
     @Override
     public void setCity(CityModel city) {
-
+        //todo
     }
 
     @Override
-    public Multi<StreetModel> getChildrenStreets() {
-        return null;
+    public Set<StreetModel> getSubStreets() {
+        return entity.getSubStreets().stream().map(StreetAdapter::new).collect(Collectors.toSet());
     }
 
     @Override
-    public void addChildrenStreet(StreetModel street) {
-
+    public void addSubStreet(StreetModel street) {
+        //todo
     }
 
     @Override
-    public void removeChildrenStreet(StreetModel street) {
-
+    public boolean removeSubStreet(StreetModel street) {
+        //todo
+        return entity.getSubStreets().removeIf(f -> f.id.toString().equals(street.getId()));
     }
 
     @Override
-    public Uni<StreetModel> getParentStreet() {
-        return null;
+    public StreetModel getParentStreet() {
+        return new StreetAdapter(entity.getParentStreet());
     }
 
     @Override
     public void setParentStreet(StreetModel street) {
-
+        //todo
     }
 }

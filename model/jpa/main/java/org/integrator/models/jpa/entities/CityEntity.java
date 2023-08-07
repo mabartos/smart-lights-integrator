@@ -1,15 +1,18 @@
 package org.integrator.models.jpa.entities;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class CityEntity extends PanacheEntity {
+public class CityEntity extends PanacheEntity implements HasEntityAttributes<CityAttributeEntity> {
     private String name;
     @ManyToOne
     private CityEntity parent;
@@ -18,6 +21,9 @@ public class CityEntity extends PanacheEntity {
 
     @Version
     private int version;
+
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "city", fetch = FetchType.EAGER)
+    private Set<CityAttributeEntity> attributes = new HashSet<>();
 
     public String getName() {
         return name;
@@ -41,6 +47,10 @@ public class CityEntity extends PanacheEntity {
 
     public void setChildrenDistricts(Set<CityEntity> districts) {
         this.districts = districts;
+    }
+
+    public Set<CityAttributeEntity> getAttributes() {
+        return attributes;
     }
 
 }

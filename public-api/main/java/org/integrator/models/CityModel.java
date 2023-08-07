@@ -1,22 +1,20 @@
 package org.integrator.models;
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
+import java.util.Set;
 
 public interface CityModel extends HasId, HasAttributes {
 
-    Uni<String> getName();
+    String getName();
 
     void setName(String name);
 
-    Multi<CityModel> getChildrenDistricts();
+    Set<CityModel> getChildrenDistricts();
 
     void addChildrenDistrict(CityModel district);
 
-    void removeChildrenDistrict(CityModel district);
+    boolean removeChildrenDistrict(CityModel district);
 
-
-    Uni<CityModel> getParentDistrict();
+    CityModel getParentDistrict();
 
     void setParentDistrict(CityModel district);
 }

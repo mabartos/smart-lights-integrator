@@ -1,30 +1,29 @@
 package org.integrator.models;
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
+import java.util.Set;
 
 public interface DeviceModel extends HasId, HasAttributes {
-    Uni<String> getSerialNo();
+    String getSerialNo();
 
     void setSerialNo(String serialNo);
 
-    Uni<String> getDeviceType();
+    String getDeviceType();
 
     void setDeviceType(String type);
 
-    Uni<StreetModel> getStreet();
+    StreetModel getStreet();
 
     void setStreet(StreetModel street);
 
-    Uni<Boolean> isEnabled();
+    boolean isEnabled();
 
     void enable(boolean enable);
 
-    Uni<Coordinates> getCoordinates();
+    Coordinates getCoordinates();
 
     void setCoordinates(Coordinates coordinates);
 
-    Multi<DeviceModel> getNeighbours();
+    Set<DeviceModel> getNeighbours();
 
     boolean addNeighbour(DeviceModel device);
 
