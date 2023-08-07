@@ -3,8 +3,6 @@ package org.integrator.models;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
-import java.util.Set;
-
 public interface StreetModel extends HasId, HasAttributes {
 
     Uni<String> getName();
@@ -21,9 +19,7 @@ public interface StreetModel extends HasId, HasAttributes {
 
     void removeChildrenStreet(StreetModel street);
 
-    Multi<StreetModel> getParentStreets();
+    Uni<StreetModel> getParentStreet();
 
-    void addParentStreet(StreetModel street);
-
-    void removeParentStreet(StreetModel street);
+    void setParentStreet(StreetModel street);
 }

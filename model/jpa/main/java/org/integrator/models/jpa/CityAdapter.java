@@ -33,17 +33,12 @@ public class CityAdapter implements CityModel {
     }
 
     @Override
-    public Multi<CityModel> getParentDistricts() {
+    public Uni<CityModel> getParentDistrict() {
         return null;
     }
 
     @Override
-    public void addParentDistrict(CityModel district) {
-
-    }
-
-    @Override
-    public void removeParentDistrict(CityModel district) {
+    public void setParentDistrict(CityModel district) {
 
     }
 
