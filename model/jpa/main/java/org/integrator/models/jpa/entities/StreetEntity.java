@@ -4,6 +4,7 @@ import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 
 import java.util.Set;
 
@@ -16,6 +17,9 @@ public class StreetEntity extends PanacheEntity {
     private Set<StreetEntity> subStreets;
     @ManyToOne
     private StreetEntity parentStreet;
+
+    @Version
+    private int version;
 
     public String getName() {
         return name;

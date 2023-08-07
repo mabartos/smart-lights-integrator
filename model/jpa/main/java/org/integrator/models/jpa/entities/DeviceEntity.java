@@ -5,6 +5,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import org.integrator.models.Coordinates;
 
 import java.util.Set;
@@ -15,12 +16,14 @@ public class DeviceEntity extends PanacheEntity {
     private String deviceType;
     private boolean enabled = true;
     @ManyToOne
-
     private StreetEntity street;
     @Embedded
     private Coordinates coordinates;
     @ManyToMany
     private Set<DeviceEntity> neighbours;
+
+    @Version
+    private int version;
 
     public String getSerialNo() {
         return serialNo;

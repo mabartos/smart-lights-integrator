@@ -4,15 +4,20 @@ import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 
 import java.util.Set;
 
 @Entity
 public class CityEntity extends PanacheEntity {
     private String name;
-
+    @ManyToOne
     private CityEntity parent;
+    @OneToMany
     private Set<CityEntity> districts;
+
+    @Version
+    private int version;
 
     public String getName() {
         return name;
@@ -22,7 +27,6 @@ public class CityEntity extends PanacheEntity {
         this.name = name;
     }
 
-    @ManyToOne
     public CityEntity getParent() {
         return parent;
     }
@@ -31,7 +35,6 @@ public class CityEntity extends PanacheEntity {
         this.parent = parent;
     }
 
-    @OneToMany
     public Set<CityEntity> getChildrenDistricts() {
         return districts;
     }
