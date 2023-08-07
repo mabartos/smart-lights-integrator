@@ -1,5 +1,6 @@
 package org.integrator.models.jpa;
 
+import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.models.CityModel;
 import org.integrator.models.jpa.entities.CityAttributeEntity;
 import org.integrator.models.jpa.entities.CityEntity;
@@ -10,10 +11,12 @@ import java.util.stream.Collectors;
 public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntity> implements CityModel {
 
     private final CityEntity entity;
+    private final Mutiny.SessionFactory sf;
 
-    public CityAdapter(CityEntity entity) {
+    public CityAdapter(CityEntity entity, Mutiny.SessionFactory sf) {
         super(entity);
         this.entity = entity;
+        this.sf = sf;
     }
 
     @Override
@@ -40,13 +43,16 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
     public Set<CityModel> getChildrenDistricts() {
         return entity.getChildrenDistricts()
                 .stream()
-                .map(CityAdapter::new)
+                .map(f -> new CityAdapter(f, sf))
                 .collect(Collectors.toSet());
     }
 
     @Override
     public void addChildrenDistrict(CityModel district) {
-        //TODO find
+        sf.withTransaction(session -> CityEntity.findById(district.getId())
+                .onItem()
+                .castTo(CityEntity.class)
+                .invoke(s -> entity.getChildrenDistricts().add(s)));
     }
 
     @Override
@@ -57,12 +63,14 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
 
     @Override
     public CityModel getParentDistrict() {
-        return new CityAdapter(entity.getParent());
+        return new CityAdapter(entity.getParent(), sf);
     }
 
     @Override
     public void setParentDistrict(CityModel district) {
-        // todo find parent
-        //entity.setParent(district);
+        sf.withTransaction(session -> CityEntity.findById(district.getId())
+                .onItem()
+                .castTo(CityEntity.class)
+                .invoke(entity::setParent));
     }
 }

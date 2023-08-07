@@ -25,7 +25,7 @@ public interface DeviceModel extends HasId, HasAttributes {
 
     Set<DeviceModel> getNeighbours();
 
-    boolean addNeighbour(DeviceModel device);
+    void addNeighbour(DeviceModel device);
 
     boolean removeNeighbour(DeviceModel device);
 }

@@ -1,10 +1,12 @@
 package org.integrator.models.jpa;
 
+import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.models.Coordinates;
 import org.integrator.models.DeviceModel;
 import org.integrator.models.StreetModel;
 import org.integrator.models.jpa.entities.DeviceAttributeEntity;
 import org.integrator.models.jpa.entities.DeviceEntity;
+import org.integrator.models.jpa.entities.StreetEntity;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,10 +14,12 @@ import java.util.stream.Collectors;
 public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, DeviceEntity> implements DeviceModel {
 
     private final DeviceEntity entity;
+    private final Mutiny.SessionFactory sf;
 
-    public DeviceAdapter(DeviceEntity entity) {
+    public DeviceAdapter(DeviceEntity entity, Mutiny.SessionFactory sf) {
         super(entity);
         this.entity = entity;
+        this.sf = sf;
     }
 
     @Override
@@ -50,12 +54,15 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
 
     @Override
     public StreetModel getStreet() {
-        return new StreetAdapter(entity.getStreet());
+        return new StreetAdapter(entity.getStreet(), sf);
     }
 
     @Override
     public void setStreet(StreetModel street) {
-        //todo find
+        sf.withTransaction(session -> StreetEntity.findById(street.getId())
+                .onItem()
+                .castTo(StreetEntity.class)
+                .invoke(entity::setStreet));
     }
 
     @Override
@@ -80,13 +87,19 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
 
     @Override
     public Set<DeviceModel> getNeighbours() {
-        return entity.getNeighbours().stream().map(DeviceAdapter::new).collect(Collectors.toSet());
+        return entity.getNeighbours()
+                .stream()
+                .map(f -> new DeviceAdapter(entity, sf))
+                .collect(Collectors.toSet());
     }
 
     @Override
-    public boolean addNeighbour(DeviceModel device) {
-        //todo find
-        return false;
+    public void addNeighbour(DeviceModel device) {
+        //TODO Could be fetched from cache
+        sf.withTransaction(session -> DeviceEntity.findById(device.getId())
+                .onItem()
+                .castTo(DeviceEntity.class)
+                .invoke(dev -> entity.getNeighbours().add(dev)));
     }
 
     @Override
