@@ -1,15 +1,17 @@
 package org.integrator.models.jpa;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import org.integrator.models.Coordinates;
 import org.integrator.models.DeviceModel;
 import org.integrator.models.StreetModel;
 
 import java.util.Map;
-import java.util.Set;
 
 public class DeviceAdapter implements DeviceModel {
+
     @Override
-    public String getSerialNo() {
+    public Uni<String> getSerialNo() {
         return null;
     }
 
@@ -19,7 +21,7 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public String getDeviceType() {
+    public Uni<String> getDeviceType() {
         return null;
     }
 
@@ -29,7 +31,7 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public StreetModel getStreet() {
+    public Uni<StreetModel> getStreet() {
         return null;
     }
 
@@ -39,8 +41,8 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public boolean isEnabled() {
-        return false;
+    public Uni<Boolean> isEnabled() {
+        return null;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public Coordinates getCoordinates() {
+    public Uni<Coordinates> getCoordinates() {
         return null;
     }
 
@@ -59,7 +61,7 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public Set<DeviceModel> getNeighbours() {
+    public Multi<DeviceModel> getNeighbours() {
         return null;
     }
 
@@ -74,13 +76,13 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public Map<String, String> getAttributes() {
+    public Uni<Map<String, String>> getAttributes() {
         return null;
     }
 
     @Override
-    public void getAttribute(String name) {
-
+    public Uni<String> getAttribute(String name) {
+        return null;
     }
 
     @Override
@@ -94,7 +96,7 @@ public class DeviceAdapter implements DeviceModel {
     }
 
     @Override
-    public String getId() {
+    public Uni<String> getId() {
         return null;
     }
 

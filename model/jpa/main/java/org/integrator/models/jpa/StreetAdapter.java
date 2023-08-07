@@ -1,13 +1,15 @@
 package org.integrator.models.jpa;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import org.integrator.models.CityModel;
 
 import java.util.Map;
-import java.util.Set;
 
 public class StreetAdapter implements CityModel {
+
     @Override
-    public String getName() {
+    public Uni<String> getName() {
         return null;
     }
 
@@ -17,7 +19,7 @@ public class StreetAdapter implements CityModel {
     }
 
     @Override
-    public Set<CityModel> getChildrenDistricts() {
+    public Multi<CityModel> getChildrenDistricts() {
         return null;
     }
 
@@ -32,7 +34,7 @@ public class StreetAdapter implements CityModel {
     }
 
     @Override
-    public Set<CityModel> getParentDistricts() {
+    public Multi<CityModel> getParentDistricts() {
         return null;
     }
 
@@ -47,13 +49,13 @@ public class StreetAdapter implements CityModel {
     }
 
     @Override
-    public Map<String, String> getAttributes() {
+    public Uni<Map<String, String>> getAttributes() {
         return null;
     }
 
     @Override
-    public void getAttribute(String name) {
-
+    public Uni<String> getAttribute(String name) {
+        return null;
     }
 
     @Override
@@ -67,7 +69,7 @@ public class StreetAdapter implements CityModel {
     }
 
     @Override
-    public String getId() {
+    public Uni<String> getId() {
         return null;
     }
 

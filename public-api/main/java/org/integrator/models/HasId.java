@@ -1,8 +1,10 @@
 package org.integrator.models;
 
+import io.smallrye.mutiny.Uni;
+
 public interface HasId {
 
-    String getId();
+    Uni<String> getId();
 
     void setId(String id);
 }

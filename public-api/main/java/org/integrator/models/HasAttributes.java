@@ -1,12 +1,14 @@
 package org.integrator.models;
 
+import io.smallrye.mutiny.Uni;
+
 import java.util.Map;
 
 public interface HasAttributes {
 
-    Map<String, String> getAttributes();
+    Uni<Map<String, String>> getAttributes();
 
-    void getAttribute(String name);
+    Uni<String> getAttribute(String name);
 
     void setAttribute(String name, String value);
 

@@ -1,24 +1,27 @@
 package org.integrator.models;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
+
 import java.util.Set;
 
 public interface StreetModel extends HasId, HasAttributes {
 
-    String getName();
+    Uni<String> getName();
 
     void setName(String name);
 
-    CityModel getCity();
+    Uni<CityModel> getCity();
 
     void setCity(CityModel city);
 
-    Set<StreetModel> getChildrenStreets();
+    Multi<StreetModel> getChildrenStreets();
 
     void addChildrenStreet(StreetModel street);
 
     void removeChildrenStreet(StreetModel street);
 
-    Set<StreetModel> getParentStreets();
+    Multi<StreetModel> getParentStreets();
 
     void addParentStreet(StreetModel street);
 
