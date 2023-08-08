@@ -6,6 +6,7 @@ import jakarta.enterprise.context.RequestScoped;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.IntegratorSession;
 import org.integrator.models.jpa.providers.JpaCityProvider;
+import org.integrator.models.jpa.providers.JpaDeviceProvider;
 import org.integrator.models.jpa.providers.JpaStreetProvider;
 import org.integrator.providers.CityProvider;
 import org.integrator.providers.DeviceProvider;
@@ -29,6 +30,6 @@ public class DefaultIntegratorSession implements IntegratorSession {
 
     @Override
     public DeviceProvider devices() {
-        return null;
+        return new JpaDeviceProvider(this, sf);
     }
 }

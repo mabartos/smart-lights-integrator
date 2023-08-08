@@ -1,6 +1,7 @@
 package org.integrator.models.jpa;
 
 import org.hibernate.reactive.mutiny.Mutiny;
+import org.integrator.IntegratorSession;
 import org.integrator.models.Coordinates;
 import org.integrator.models.DeviceModel;
 import org.integrator.models.StreetModel;
@@ -13,11 +14,13 @@ import java.util.stream.Collectors;
 
 public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, DeviceEntity> implements DeviceModel {
 
+    private final IntegratorSession session;
     private final DeviceEntity entity;
     private final Mutiny.SessionFactory sf;
 
-    public DeviceAdapter(DeviceEntity entity, Mutiny.SessionFactory sf) {
+    public DeviceAdapter(IntegratorSession session, DeviceEntity entity, Mutiny.SessionFactory sf) {
         super(entity);
+        this.session = session;
         this.entity = entity;
         this.sf = sf;
     }
@@ -49,7 +52,7 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
 
     @Override
     public StreetModel getStreet() {
-        return new StreetAdapter(entity.getStreet(), sf);
+        return new StreetAdapter(session, entity.getStreet(), sf);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
     public Set<DeviceModel> getNeighbours() {
         return entity.getNeighbours()
                 .stream()
-                .map(f -> new DeviceAdapter(entity, sf))
+                .map(f -> new DeviceAdapter(session, entity, sf))
                 .collect(Collectors.toSet());
     }
 
