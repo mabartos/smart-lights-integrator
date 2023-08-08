@@ -1,4 +1,4 @@
-package org.integrator.models.providers;
+package org.integrator.providers;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;

@@ -1,6 +1,7 @@
 package org.integrator.models.jpa;
 
 import org.hibernate.reactive.mutiny.Mutiny;
+import org.integrator.IntegratorSession;
 import org.integrator.models.CityModel;
 import org.integrator.models.StreetModel;
 import org.integrator.models.jpa.entities.CityEntity;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 
 public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, StreetEntity> implements StreetModel {
 
+    private final IntegratorSession session;
     private final StreetEntity entity;
     private final Mutiny.SessionFactory sf;
 
-    public StreetAdapter(StreetEntity entity, Mutiny.SessionFactory sf) {
+    public StreetAdapter(IntegratorSession session, StreetEntity entity, Mutiny.SessionFactory sf) {
         super(entity);
+        this.session = session;
         this.entity = entity;
         this.sf = sf;
     }
@@ -38,7 +41,7 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
 
     @Override
     public CityModel getCity() {
-        return new CityAdapter(entity.getCity(), sf);
+        return new CityAdapter(session, entity.getCity(), sf);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
     public Set<StreetModel> getSubStreets() {
         return entity.getSubStreets()
                 .stream()
-                .map(f -> new StreetAdapter(entity, sf))
+                .map(f -> new StreetAdapter(session, entity, sf))
                 .collect(Collectors.toSet());
     }
 
@@ -72,7 +75,7 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
 
     @Override
     public StreetModel getParentStreet() {
-        return new StreetAdapter(entity.getParentStreet(), sf);
+        return new StreetAdapter(session, entity.getParentStreet(), sf);
     }
 
     @Override

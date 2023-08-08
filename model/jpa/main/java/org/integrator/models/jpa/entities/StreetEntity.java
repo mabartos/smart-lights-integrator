@@ -8,6 +8,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
@@ -18,6 +20,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "StreetEntity.getByName", query = "from StreetEntity s where s.name=:streetName and s.city.name=:cityName")
+})
 public class StreetEntity extends PanacheEntityBase implements HasEntityAttributes<StreetAttributeEntity> {
 
     @Id

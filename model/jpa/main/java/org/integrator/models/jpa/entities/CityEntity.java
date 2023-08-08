@@ -1,6 +1,5 @@
 package org.integrator.models.jpa.entities;
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,6 +28,9 @@ public class CityEntity extends PanacheEntityBase implements HasEntityAttributes
     private CityEntity parent;
     @OneToMany
     private Set<CityEntity> districts;
+
+    @OneToMany
+    private Set<StreetEntity> streets;
 
     @Version
     private int version;
@@ -66,6 +68,14 @@ public class CityEntity extends PanacheEntityBase implements HasEntityAttributes
 
     public Set<CityAttributeEntity> getAttributes() {
         return attributes;
+    }
+
+    public Set<StreetEntity> getStreets() {
+        return streets;
+    }
+
+    public void setStreets(Set<StreetEntity> streets) {
+        this.streets = streets;
     }
 
 }

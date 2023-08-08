@@ -1,7 +1,10 @@
 package org.integrator.models.jpa;
 
+import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
+import org.integrator.IntegratorSession;
 import org.integrator.models.CityModel;
+import org.integrator.models.StreetModel;
 import org.integrator.models.jpa.entities.CityAttributeEntity;
 import org.integrator.models.jpa.entities.CityEntity;
 
@@ -10,11 +13,13 @@ import java.util.stream.Collectors;
 
 public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntity> implements CityModel {
 
+    private final IntegratorSession session;
     private final CityEntity entity;
     private final Mutiny.SessionFactory sf;
 
-    public CityAdapter(CityEntity entity, Mutiny.SessionFactory sf) {
+    public CityAdapter(IntegratorSession session, CityEntity entity, Mutiny.SessionFactory sf) {
         super(entity);
+        this.session = session;
         this.entity = entity;
         this.sf = sf;
     }
@@ -38,7 +43,7 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
     public Set<CityModel> getChildrenDistricts() {
         return entity.getChildrenDistricts()
                 .stream()
-                .map(f -> new CityAdapter(f, sf))
+                .map(f -> new CityAdapter(session, f, sf))
                 .collect(Collectors.toSet());
     }
 
@@ -57,7 +62,7 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
 
     @Override
     public CityModel getParentDistrict() {
-        return new CityAdapter(entity.getParent(), sf);
+        return new CityAdapter(session, entity.getParent(), sf);
     }
 
     @Override
@@ -66,5 +71,10 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
                 .onItem()
                 .castTo(CityEntity.class)
                 .invoke(entity::setParent));
+    }
+
+    @Override
+    public Uni<StreetModel> addStreet(String name) {
+        return session.streets().createStreet(this, name);
     }
 }
