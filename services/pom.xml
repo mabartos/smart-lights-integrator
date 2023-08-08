@@ -12,4 +12,23 @@
     <artifactId>smart-lights-services</artifactId>
     <name>Services</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-arc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.integrator</groupId>
+            <artifactId>smart-lights-public-api</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.integrator</groupId>
+            <artifactId>smart-lights-model-jpa</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 </project>
