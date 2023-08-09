@@ -1,6 +1,7 @@
 package org.integrator.service;
 
 
+import io.quarkus.arc.Arc;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.IntegratorSession;
@@ -12,14 +13,13 @@ import org.integrator.providers.DatastoreProvider;
 public class DefaultIntegratorSession implements IntegratorSession {
 
     private final IntegratorSessionFactory factory;
+    private final Mutiny.SessionFactory sf;
     private DatastoreProvider datastoreProvider;
 
     public DefaultIntegratorSession(IntegratorSessionFactory factory) {
         this.factory = factory;
+        this.sf = Arc.container().instance(Mutiny.SessionFactory.class).get();
     }
-
-    @ApplicationScoped
-    private Mutiny.SessionFactory sf;
 
     @Override
     public DatastoreProvider datastore() {
