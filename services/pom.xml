@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.integrator</groupId>
-            <artifactId>smart-lights-public-api</artifactId>
+            <artifactId>smart-lights-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

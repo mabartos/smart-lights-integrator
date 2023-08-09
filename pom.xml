@@ -23,8 +23,7 @@
     </properties>
 
     <modules>
-        <module>private-api</module>
-        <module>public-api</module>
+        <module>api</module>
         <module>model</module>
         <module>services</module>
         <module>extensions</module>
