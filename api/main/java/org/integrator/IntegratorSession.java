@@ -9,6 +9,8 @@ public interface IntegratorSession {
 
     DatastoreProvider datastore();
 
+    IntegratorSessionFactory getIntegratorFactory();
+
     default CityProvider cities() {
         return datastore().cities();
     }

@@ -2,17 +2,21 @@ package org.integrator.service;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.IntegratorSession;
+import org.integrator.IntegratorSessionFactory;
 import org.integrator.models.jpa.providers.JpaDataStoreProvider;
 import org.integrator.models.jpa.providers.JpaDataStoreProviderFactory;
 import org.integrator.providers.DatastoreProvider;
 
-@RequestScoped
 public class DefaultIntegratorSession implements IntegratorSession {
 
+    private final IntegratorSessionFactory factory;
     private DatastoreProvider datastoreProvider;
+
+    public DefaultIntegratorSession(IntegratorSessionFactory factory) {
+        this.factory = factory;
+    }
 
     @ApplicationScoped
     private Mutiny.SessionFactory sf;
@@ -24,5 +28,10 @@ public class DefaultIntegratorSession implements IntegratorSession {
             new JpaDataStoreProvider(this, sf);
         }
         return datastoreProvider;
+    }
+
+    @Override
+    public IntegratorSessionFactory getIntegratorFactory() {
+        return factory;
     }
 }

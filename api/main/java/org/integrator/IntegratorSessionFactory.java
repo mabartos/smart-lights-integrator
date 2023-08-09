@@ -11,7 +11,15 @@ public interface IntegratorSessionFactory {
 
     void init();
 
-    <T extends Provider> Optional<ProviderFactory<T>> getProviderFactory(Class<T> providerClass);
+    /**
+     * Return default Provider Factory for the Provider
+     * If there's no default factory, return the first found
+     */
+    <T extends Provider> Optional<ProviderFactory<? extends Provider>> getProviderFactory(Class<T> providerClass);
 
-    <T extends Provider> Optional<ProviderFactory<T>> getProviderFactory(Class<T> providerClass, String id);
+    /**
+     * Return Provider Factory for Provider with factory id
+     * If there's no such factory, return empty Optional
+     */
+    <T extends Provider> Optional<ProviderFactory<? extends Provider>> getProviderFactory(Class<T> providerClass, String id);
 }
