@@ -5,7 +5,7 @@ import org.integrator.models.Coordinates;
 import org.integrator.models.DeviceModel;
 import org.integrator.models.StreetModel;
 
-public interface DeviceProvider {
+public interface DeviceProvider extends Provider {
 
     default Uni<DeviceModel> createDevice(StreetModel street, String serialNo) {
         return createDevice(street, serialNo, null);

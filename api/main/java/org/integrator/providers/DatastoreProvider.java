@@ -1,6 +1,6 @@
 package org.integrator.providers;
 
-public interface DatastoreProvider {
+public interface DatastoreProvider extends Provider {
 
     CityProvider cities();
 

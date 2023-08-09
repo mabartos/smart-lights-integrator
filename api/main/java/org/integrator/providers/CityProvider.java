@@ -6,7 +6,7 @@ import org.integrator.models.CityModel;
 
 import java.util.List;
 
-public interface CityProvider {
+public interface CityProvider extends Provider {
 
     Uni<CityModel> createCity(String name);
 

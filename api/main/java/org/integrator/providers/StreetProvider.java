@@ -4,7 +4,7 @@ import io.smallrye.mutiny.Uni;
 import org.integrator.models.CityModel;
 import org.integrator.models.StreetModel;
 
-public interface StreetProvider {
+public interface StreetProvider extends Provider {
 
     Uni<StreetModel> createStreet(CityModel city, String name);
 
