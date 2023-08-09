@@ -6,6 +6,7 @@ import jakarta.enterprise.context.RequestScoped;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.IntegratorSession;
 import org.integrator.models.jpa.providers.JpaDataStoreProvider;
+import org.integrator.models.jpa.providers.JpaDataStoreProviderFactory;
 import org.integrator.providers.DatastoreProvider;
 
 @RequestScoped
@@ -19,7 +20,8 @@ public class DefaultIntegratorSession implements IntegratorSession {
     @Override
     public DatastoreProvider datastore() {
         if (datastoreProvider == null) {
-            datastoreProvider = new JpaDataStoreProvider(this, sf);
+            datastoreProvider = new JpaDataStoreProviderFactory().create(this);
+            new JpaDataStoreProvider(this, sf);
         }
         return datastoreProvider;
     }
