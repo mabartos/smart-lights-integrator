@@ -8,6 +8,7 @@ import org.integrator.models.StreetModel;
 import org.integrator.models.jpa.entities.CityAttributeEntity;
 import org.integrator.models.jpa.entities.CityEntity;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,8 +62,8 @@ public class CityAdapter extends AttributesEntity<CityAttributeEntity, CityEntit
     }
 
     @Override
-    public CityModel getParentDistrict() {
-        return new CityAdapter(session, entity.getParent(), sf);
+    public Optional<CityModel> getParentDistrict() {
+        return entity.getParent() == null ? Optional.empty() : Optional.of(new CityAdapter(session, entity.getParent(), sf));
     }
 
     @Override

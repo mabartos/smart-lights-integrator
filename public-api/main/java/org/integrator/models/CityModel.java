@@ -2,6 +2,7 @@ package org.integrator.models;
 
 import io.smallrye.mutiny.Uni;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface CityModel extends HasId, HasAttributes {
@@ -16,7 +17,7 @@ public interface CityModel extends HasId, HasAttributes {
 
     boolean removeChildrenDistrict(CityModel district);
 
-    CityModel getParentDistrict();
+    Optional<CityModel> getParentDistrict();
 
     void setParentDistrict(CityModel district);
 

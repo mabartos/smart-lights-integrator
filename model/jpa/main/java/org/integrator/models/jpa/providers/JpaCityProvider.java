@@ -10,6 +10,7 @@ import org.integrator.models.jpa.entities.CityEntity;
 import org.integrator.providers.CityProvider;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JpaCityProvider implements CityProvider {
@@ -70,8 +71,11 @@ public class JpaCityProvider implements CityProvider {
                 .invoke((s) -> {
                     s.setName(city.getName());
 
-                    if (!s.getParent().getId().equals(city.getParentDistrict().getId())) {
-                        CityEntity.findById(city.getParentDistrict().getId()).onItem().castTo(CityEntity.class).invoke(s::setParent);
+                    final Supplier<Boolean> isSameParent = () -> !s.getParent().getId().equals(city.getParentDistrict().get().getId());
+
+                    if (city.getParentDistrict().isPresent() && !isSameParent.get()) {
+                        final String parentId = city.getParentDistrict().get().getId();
+                        CityEntity.findById(parentId).onItem().castTo(CityEntity.class).invoke(s::setParent);
                     }
                 }));
     }

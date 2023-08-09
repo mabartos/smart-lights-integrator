@@ -9,6 +9,7 @@ import org.integrator.models.jpa.entities.DeviceAttributeEntity;
 import org.integrator.models.jpa.entities.DeviceEntity;
 import org.integrator.models.jpa.entities.StreetEntity;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,8 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
     }
 
     @Override
-    public String getDeviceType() {
-        return entity.getDeviceType();
+    public Optional<String> getDeviceType() {
+        return Optional.ofNullable(entity.getDeviceType());
     }
 
     @Override
@@ -74,8 +75,8 @@ public class DeviceAdapter extends AttributesEntity<DeviceAttributeEntity, Devic
     }
 
     @Override
-    public Coordinates getCoordinates() {
-        return entity.getCoordinates();
+    public Optional<Coordinates> getCoordinates() {
+        return Optional.ofNullable(entity.getCoordinates());
     }
 
     @Override

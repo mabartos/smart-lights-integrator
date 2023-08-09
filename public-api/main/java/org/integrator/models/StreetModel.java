@@ -1,5 +1,6 @@
 package org.integrator.models;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface StreetModel extends HasId, HasAttributes {
@@ -18,7 +19,7 @@ public interface StreetModel extends HasId, HasAttributes {
 
     boolean removeSubStreet(StreetModel street);
 
-    StreetModel getParentStreet();
+    Optional<StreetModel> getParentStreet();
 
     void setParentStreet(StreetModel street);
 }

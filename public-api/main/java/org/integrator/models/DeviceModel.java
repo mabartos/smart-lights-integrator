@@ -1,5 +1,6 @@
 package org.integrator.models;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface DeviceModel extends HasId, HasAttributes {
@@ -7,7 +8,7 @@ public interface DeviceModel extends HasId, HasAttributes {
 
     void setSerialNo(String serialNo);
 
-    String getDeviceType();
+    Optional<String> getDeviceType();
 
     void setDeviceType(String type);
 
@@ -19,7 +20,7 @@ public interface DeviceModel extends HasId, HasAttributes {
 
     void enable(boolean enable);
 
-    Coordinates getCoordinates();
+    Optional<Coordinates> getCoordinates();
 
     void setCoordinates(Coordinates coordinates);
 

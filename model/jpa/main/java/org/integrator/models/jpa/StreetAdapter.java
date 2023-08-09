@@ -8,6 +8,7 @@ import org.integrator.models.jpa.entities.CityEntity;
 import org.integrator.models.jpa.entities.StreetAttributeEntity;
 import org.integrator.models.jpa.entities.StreetEntity;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -74,8 +75,9 @@ public class StreetAdapter extends AttributesEntity<StreetAttributeEntity, Stree
     }
 
     @Override
-    public StreetModel getParentStreet() {
-        return new StreetAdapter(session, entity.getParentStreet(), sf);
+    public Optional<StreetModel> getParentStreet() {
+        final StreetEntity found = entity.getParentStreet();
+        return found != null ? Optional.of(new StreetAdapter(session, entity.getParentStreet(), sf)) : Optional.empty();
     }
 
     @Override
