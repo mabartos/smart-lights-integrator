@@ -13,6 +13,10 @@
     <name>Model JPA</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <quarkiverse-h2-client.version>0.2.2</quarkiverse-h2-client.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.integrator</groupId>
@@ -23,6 +27,11 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-reactive-panache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.quarkus-reactive-h2-client</groupId>
+            <artifactId>quarkus-reactive-h2-client</artifactId>
+            <version>${quarkiverse-h2-client.version}</version>
         </dependency>
     </dependencies>
 
