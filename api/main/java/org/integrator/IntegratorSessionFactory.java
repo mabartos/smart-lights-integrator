@@ -11,6 +11,8 @@ public interface IntegratorSessionFactory {
 
     void init();
 
+    void shutdown();
+
     /**
      * Return default Provider Factory for the Provider
      * If there's no default factory, return the first found

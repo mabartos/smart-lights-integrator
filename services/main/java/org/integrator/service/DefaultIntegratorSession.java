@@ -1,31 +1,52 @@
 package org.integrator.service;
 
-
-import io.quarkus.arc.Arc;
-import jakarta.enterprise.context.ApplicationScoped;
-import org.hibernate.reactive.mutiny.Mutiny;
 import org.integrator.IntegratorSession;
 import org.integrator.IntegratorSessionFactory;
-import org.integrator.models.jpa.providers.JpaDataStoreProvider;
-import org.integrator.models.jpa.providers.JpaDataStoreProviderFactory;
 import org.integrator.providers.DatastoreProvider;
+import org.integrator.providers.Provider;
+import org.integrator.providers.factories.ProviderFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class DefaultIntegratorSession implements IntegratorSession {
 
     private final IntegratorSessionFactory factory;
-    private final Mutiny.SessionFactory sf;
+    private final Map<Integer, Provider> providers = new HashMap<>();
+
     private DatastoreProvider datastoreProvider;
 
     public DefaultIntegratorSession(IntegratorSessionFactory factory) {
         this.factory = factory;
-        this.sf = Arc.container().instance(Mutiny.SessionFactory.class).get();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Provider> T getProvider(Class<T> clazz, String id) {
+        int hashCode = clazz.hashCode() + id.hashCode();
+        Provider provider = providers.get(hashCode);
+
+        if (provider == null) {
+            Optional<ProviderFactory<? extends Provider>> foundFactory = factory.getProviderFactory(clazz, id);
+            if (foundFactory.isPresent()) {
+                provider = foundFactory.get().create(this);
+                providers.put(hashCode, provider);
+            }
+        }
+
+        return (T) provider;
+    }
+
+    @Override
+    public void shutdown() {
+        //nop
     }
 
     @Override
     public DatastoreProvider datastore() {
         if (datastoreProvider == null) {
-            datastoreProvider = new JpaDataStoreProviderFactory().create(this);
-            new JpaDataStoreProvider(this, sf);
+            datastoreProvider = getProvider(DatastoreProvider.class);
         }
         return datastoreProvider;
     }

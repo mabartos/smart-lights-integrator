@@ -10,11 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.integrator.providers.factories.ProviderFactory.DEFAULT_ID;
 
 public class DefaultIntegratorSessionFactory implements IntegratorSessionFactory {
-    protected volatile Map<Class<? extends Provider>, Map<String, ProviderFactory<? extends Provider>>> factories = new HashMap<>();
+    protected volatile Map<Class<? extends Provider>, Map<String, ProviderFactory<? extends Provider>>> factories = new ConcurrentHashMap<>();
 
     @Override
     public IntegratorSession create() {
@@ -24,12 +25,20 @@ public class DefaultIntegratorSessionFactory implements IntegratorSessionFactory
     @Override
     public void init() {
         for (Spi spi : ServiceLoader.load(Spi.class)) {
+            if (!spi.isEnabled()) continue;
+
             Map<String, ProviderFactory<? extends Provider>> foundFactories = new HashMap<>();
             for (ProviderFactory<? extends Provider> factory : ServiceLoader.load(spi.getProviderFactoryClass())) {
+                if (!factory.isSupported()) continue;
                 foundFactories.put(factory.getId(), factory);
             }
             factories.put(spi.getProviderClass(), foundFactories);
         }
+    }
+
+    @Override
+    public void shutdown() {
+        //nop
     }
 
     @Override
@@ -40,7 +49,6 @@ public class DefaultIntegratorSessionFactory implements IntegratorSessionFactory
     @Override
     public <T extends Provider> Optional<ProviderFactory<? extends Provider>> getProviderFactory(Class<T> providerClass, String id) {
         final Map<String, ProviderFactory<? extends Provider>> foundFactories = Optional.ofNullable(factories.get(providerClass)).orElseGet(HashMap::new);
-
         return Optional.of(foundFactories).map(f -> f.get(id));
     }
 }
